@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
             }else if(itemId== R.id.setting) {
                 replaceFragment(new SettingFragment());
             }
-
+//HOLA
             return true;
         });
     }
