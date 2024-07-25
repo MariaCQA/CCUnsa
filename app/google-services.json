@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "168149978867",
+    "project_id": "ccunsa-a4486",
+    "storage_bucket": "ccunsa-a4486.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168149978867:android:fd88f419f0929ee9407186",
+        "android_client_info": {
+          "package_name": "com.example.ccunsa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHbRv4rVTnUMTuUAS4s12mv4hhDky2-4w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
