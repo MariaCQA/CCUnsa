@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.OptIn;
@@ -27,7 +26,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
-
+import androidx.navigation.fragment.NavHostFragment;
 import com.example.ccunsa.R;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
@@ -35,7 +34,6 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.barcode.common.Barcode;
-
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -43,9 +41,6 @@ import java.util.concurrent.Executors;
 public class QrFragment extends Fragment {
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 101;
     private ExecutorService cameraExecutor;
-    private Preview preview;
-    private ImageCapture imageCapture;
-    private ImageAnalysis imageAnalysis;
     private PreviewView previewView;
 
     @Nullable
@@ -70,15 +65,14 @@ public class QrFragment extends Fragment {
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
                 bindPreview(cameraProvider);
             } catch (ExecutionException | InterruptedException e) {
-                // Handle any errors (including cancellation) here.
+                Toast.makeText(getActivity(), "Failed to start camera", Toast.LENGTH_SHORT).show();
             }
         }, ContextCompat.getMainExecutor(getActivity()));
     }
 
     private void bindPreview(@NonNull ProcessCameraProvider cameraProvider) {
-        preview = new Preview.Builder().build();
-        imageCapture = new ImageCapture.Builder().build();
-        imageAnalysis = new ImageAnalysis.Builder()
+        Preview preview = new Preview.Builder().build();
+        ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
                 .setTargetResolution(new Size(1280, 720))
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build();
@@ -89,20 +83,19 @@ public class QrFragment extends Fragment {
 
         preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
-        imageAnalysis.setAnalyzer(cameraExecutor, new ImageAnalysis.Analyzer() {
-            @OptIn(markerClass = ExperimentalGetImage.class) @Override
-            public void analyze(@NonNull ImageProxy imageProxy) {
-                @SuppressLint("UnsafeExperimentalUsageError")
-                @androidx.camera.core.ExperimentalGetImage
-                Image mediaImage = imageProxy.getImage();
-                if (mediaImage != null) {
-                    InputImage image = InputImage.fromMediaImage(mediaImage, imageProxy.getImageInfo().getRotationDegrees());
-                    scanBarcodes(image, imageProxy);
-                }
-            }
-        });
+        imageAnalysis.setAnalyzer(cameraExecutor, this::analyzeImage);
 
-        Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview, imageCapture, imageAnalysis);
+        Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview, imageAnalysis);
+    }
+
+    @OptIn(markerClass = androidx.camera.core.ExperimentalGetImage.class)
+    private void analyzeImage(@NonNull ImageProxy imageProxy) {
+        @SuppressLint("UnsafeExperimentalUsageError")
+        Image mediaImage = imageProxy.getImage();
+        if (mediaImage != null) {
+            InputImage image = InputImage.fromMediaImage(mediaImage, imageProxy.getImageInfo().getRotationDegrees());
+            scanBarcodes(image, imageProxy);
+        }
     }
 
     private void scanBarcodes(InputImage image, ImageProxy imageProxy) {
@@ -115,26 +108,23 @@ public class QrFragment extends Fragment {
                 .addOnSuccessListener(barcodes -> {
                     for (Barcode barcode : barcodes) {
                         String rawValue = barcode.getRawValue();
-                        // Handle the QR code value
-                        Toast.makeText(getActivity(), "QR Code: " + rawValue, Toast.LENGTH_SHORT).show();
-                        break;
+                        if (rawValue.contains("pinturaID:")) {
+                            String idStr = rawValue.split("pinturaID:")[1].trim();
+                            navigateToPinturaFragment(idStr);
+                        }
                     }
                     imageProxy.close();
                 })
                 .addOnFailureListener(e -> {
+                    Toast.makeText(getActivity(), "Error processing QR code", Toast.LENGTH_SHORT).show();
                     imageProxy.close();
                 });
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startCamera();
-            } else {
-                Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT).show();
-            }
-        }
+    private void navigateToPinturaFragment(String pinturaId) {
+        Bundle args = new Bundle();
+        args.putString("pinturaId", pinturaId);
+        NavHostFragment.findNavController(QrFragment.this).navigate(R.id.action_show_pintura, args);
     }
 
     @Override

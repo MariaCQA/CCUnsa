@@ -13,8 +13,7 @@ public class PinturaRepository {
 
     private PinturaDao pinturaDao;
     private LiveData<List<Pintura>> allPinturas;
-    private static final int NUMBER_OF_THREADS = 4;
-    static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+    private static ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public PinturaRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
@@ -26,20 +25,24 @@ public class PinturaRepository {
         return allPinturas;
     }
 
+    public LiveData<Pintura> getPinturaById(int id) {
+        return pinturaDao.getPinturaById(id);
+    }
+
     public void insert(Pintura pintura) {
-        databaseWriteExecutor.execute(() -> {
+        executorService.execute(() -> {
             pinturaDao.insert(pintura);
         });
     }
 
     public void update(Pintura pintura) {
-        databaseWriteExecutor.execute(() -> {
+        executorService.execute(() -> {
             pinturaDao.update(pintura);
         });
     }
 
     public void delete(Pintura pintura) {
-        databaseWriteExecutor.execute(() -> {
+        executorService.execute(() -> {
             pinturaDao.delete(pintura);
         });
     }

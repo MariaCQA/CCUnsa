@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/MapFragment">
+
+    <fragment
+        android:id="@+id/MapFragment"
+        android:name="com.example.ccunsa.view.fragments.MapFragment"
+        android:label="Map"
+        tools:layout="@layout/fragment_map" />
+
+    <fragment
+        android:id="@+id/SearchFragment"
+        android:name="com.example.ccunsa.view.fragments.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/QrFragment"
+        android:name="com.example.ccunsa.view.fragments.QrFragment"
+        android:label="QR"
+        tools:layout="@layout/fragment_qr">
+        <action
+            android:id="@+id/action_show_pintura"
+            app:destination="@id/PinturaFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/FavoriteFragment"
+        android:name="com.example.ccunsa.view.fragments.FavoriteFragment"
+        android:label="Favorite"
+        tools:layout="@layout/fragment_favorite" />
+
+    <fragment
+        android:id="@+id/SettingFragment"
+        android:name="com.example.ccunsa.view.fragments.SettingFragment"
+        android:label="Setting"
+        tools:layout="@layout/fragment_setting" />
+
+    <fragment
+        android:id="@+id/PinturaFragment"
+        android:name="com.example.ccunsa.view.fragments.PinturaFragment"
+        android:label="Pintura"
+        tools:layout="@layout/fragment_pintura" />
+</navigation>
