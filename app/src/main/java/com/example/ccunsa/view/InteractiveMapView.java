@@ -11,6 +11,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.example.ccunsa.R;
+import com.example.ccunsa.view.fragments.Detail.RoomDetailFragment;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +71,7 @@ public class InteractiveMapView extends View {
                     for (GalleryArea area : galleryAreas) {
                         if (area.rect.contains(x, y)) {
                             Toast.makeText(getContext(), area.label + " clicked", Toast.LENGTH_SHORT).show();
+                            navigateToRoomDetail(area.label);
                             return true;
                         }
                     }
@@ -95,7 +103,6 @@ public class InteractiveMapView extends View {
         drawRoom(canvas, "GALERIA VI", 0.70f, 0.52f, 1f, 0.78f, viewWidth, viewHeight);
         drawRoom(canvas, "VACIO", 0f, 0.52f, 0.26f, 0.78f, viewWidth, viewHeight, false, Color.parseColor("#800000"));
         drawRoom(canvas, "SS.HH", 0f, 0.78f, 0.24f, 0.85f, viewWidth, viewHeight, true, Color.CYAN);
-
     }
 
     private void drawRoom(Canvas canvas, String label, float leftRel, float topRel, float rightRel, float bottomRel, float viewWidth, float viewHeight) {
@@ -136,6 +143,17 @@ public class InteractiveMapView extends View {
         canvas.drawText(label, centerX, centerY, textPaint);
 
         galleryAreas.add(new GalleryArea(label, new RectF(left, top, right, bottom)));
+    }
+
+    private void navigateToRoomDetail(String roomName) {
+        FragmentActivity activity = (FragmentActivity) getContext();
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        RoomDetailFragment roomDetailFragment = RoomDetailFragment.newInstance(roomName);
+        fragmentTransaction.replace(R.id.frame_layout, roomDetailFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     private static class GalleryArea {
