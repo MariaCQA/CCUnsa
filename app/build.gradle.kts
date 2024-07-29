@@ -36,16 +36,18 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.room.common)
+    implementation(libs.room.runtime)
+    implementation("androidx.recyclerview:recyclerview:1.2.1") // Asegúrate de tener esta línea
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation ("com.google.android.material:material:1.3.0")  // Ajusta la versión según tu proyecto
-    implementation ("androidx.viewpager2:viewpager2:1.0.0")  // Ajusta la versión según tu proyecto
-
-
+    implementation("com.google.android.material:material:1.3.0")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+    annotationProcessor(libs.room.compiler) // Ajusta según sea necesario para Room
+    //kapt(libs.room.compiler) // Si estás usando KAPT para Room
 }
