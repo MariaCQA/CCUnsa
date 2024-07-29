@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/mapFragment">
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.ccunsa.view.fragments.MapFragment"
+        tools:layout="@layout/fragment_map" />
+
+    <fragment
+        android:id="@+id/qrFragment"
+        android:name="com.example.ccunsa.view.fragments.QrFragment"
+        tools:layout="@layout/fragment_qr" />
+
+    <fragment
+        android:id="@+id/pinturaFragment"
+        android:name="com.example.ccunsa.view.fragments.PinturaFragment"
+        tools:layout="@layout/fragment_pintura">
+        <argument
+            android:name="pinturaId"
+            app:argType="string" />
+    </fragment>
+
+    <action
+        android:id="@+id/action_show_pintura"
+        app:destination="@id/pinturaFragment" />
+</navigation>
