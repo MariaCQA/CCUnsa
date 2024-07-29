@@ -1,4 +1,4 @@
-package com.example.ccunsa.views;
+package com.example.ccunsa.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
