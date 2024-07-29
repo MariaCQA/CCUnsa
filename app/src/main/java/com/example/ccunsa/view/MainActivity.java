@@ -22,12 +22,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new MapFragment());  // Reemplazar HomeFragment con MapFragment
+        replaceFragment(new MapFragment());
+
         binding.bottomNavigationView.setBackground(null);
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.home) {
-                replaceFragment(new MapFragment());  // Reemplazar HomeFragment con MapFragment
+                replaceFragment(new MapFragment());
             } else if (itemId == R.id.search) {
                 replaceFragment(new SearchFragment());
             } else if (itemId == R.id.qr) {
@@ -38,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new SettingFragment());
             }
             return true;
+        });
+
+        // Handle FloatingActionButton click
+        binding.fab.setOnClickListener(v -> {
+            replaceFragment(new QrFragment());
         });
     }
 
