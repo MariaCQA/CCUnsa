@@ -1,23 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/home"
-        android:title="Inicio"
-        android:icon="@drawable/home_ic"/>
+        android:id="@+id/MapFragment"
+        android:icon="@drawable/home_ic"
+        android:title="Map" />
     <item
-        android:id="@+id/search"
-        android:title="Buscar"
-        android:icon="@drawable/search_ic"/>
+        android:id="@+id/SearchFragment"
+        android:icon="@drawable/search_ic"
+        android:title="Search" />
     <item
-        android:id="@+id/qr"
-        android:title=""
-        android:enabled="false"/>
+        android:id="@+id/QrFragment"
+        android:icon="@drawable/qr_ic"
+        android:title="QR" />
     <item
-        android:id="@+id/favorite"
-        android:title="Favoritos"
-        android:icon="@drawable/favorite_ic"/>
+        android:id="@+id/FavoriteFragment"
+        android:icon="@drawable/favorite_ic"
+        android:title="Favorite" />
     <item
-        android:id="@+id/setting"
-        android:title="Configuración"
-        android:icon="@drawable/setting_ic"/>
+        android:id="@+id/SettingFragment"
+        android:icon="@drawable/setting_ic"
+        android:title="Setting" />
 </menu>
