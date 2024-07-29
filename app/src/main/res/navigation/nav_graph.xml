@@ -8,7 +8,11 @@
         android:id="@+id/MapFragment"
         android:name="com.example.ccunsa.view.fragments.MapFragment"
         android:label="Map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map">
+        <action
+            android:id="@+id/action_map_to_roomDetail"
+            app:destination="@id/RoomDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/SearchFragment"
@@ -43,4 +47,10 @@
         android:name="com.example.ccunsa.view.fragments.PinturaFragment"
         android:label="Pintura"
         tools:layout="@layout/fragment_pintura" />
+
+    <fragment
+        android:id="@+id/RoomDetailFragment"
+        android:name="com.example.ccunsa.view.fragments.RoomDetailFragment"
+        android:label="Room Detail"
+        tools:layout="@layout/fragment_room_detail" />
 </navigation>

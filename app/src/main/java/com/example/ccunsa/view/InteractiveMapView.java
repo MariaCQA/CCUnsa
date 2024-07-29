@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,9 +15,11 @@ import android.widget.Toast;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.ccunsa.R;
-import com.example.ccunsa.view.fragments.Detail.RoomDetailFragment;
+import com.example.ccunsa.view.fragments.RoomDetailFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,14 +150,15 @@ public class InteractiveMapView extends View {
 
     private void navigateToRoomDetail(String roomName) {
         FragmentActivity activity = (FragmentActivity) getContext();
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        RoomDetailFragment roomDetailFragment = RoomDetailFragment.newInstance(roomName);
-        fragmentTransaction.replace(R.id.frame_layout, roomDetailFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        NavHostFragment navHostFragment = (NavHostFragment) activity.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        if (navHostFragment != null) {
+            NavController navController = navHostFragment.getNavController();
+            Bundle args = new Bundle();
+            args.putString("roomName", roomName);
+            navController.navigate(R.id.action_map_to_roomDetail, args);
+        }
     }
+
 
     private static class GalleryArea {
         String label;
