@@ -1,22 +1,32 @@
 package com.example.ccunsa.view.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
 import com.bumptech.glide.Glide;
 import com.example.ccunsa.R;
+import com.example.ccunsa.model.Pintura;
+import com.example.ccunsa.service.AudioPlayService;
 import com.example.ccunsa.viewmodel.PinturaViewModel;
 
 public class PinturaFragment extends Fragment {
     private TextView title, description;
     private ImageView image;
+    private PinturaViewModel pinturaViewModel;
+    private int pinturaId;
+    private String audioFileName;
 
     @Nullable
     @Override
@@ -26,35 +36,80 @@ public class PinturaFragment extends Fragment {
         description = view.findViewById(R.id.description);
         image = view.findViewById(R.id.image);
 
-        // Obtiene el ID de pintura, asegurándose que sea un número válido
-        int pinturaId = getArguments() != null ? getArguments().getInt("pinturaId", -1) : -1;
+        Button btnPlay = view.findViewById(R.id.play_button);
+        Button btnPause = view.findViewById(R.id.pause_button);
+        Button btnResume = view.findViewById(R.id.resume_button);
+        Button btnStop = view.findViewById(R.id.stop_button);
 
-        // Asegúrate de que el ID es válido antes de continuar
-        if (pinturaId == -1) {
-            title.setText("Pintura no encontrada");
-            description.setText("");
-            image.setImageResource(R.drawable.placeholder); // Asegúrate de tener una imagen de marcador de posición adecuada
-            return view;
+        if (getArguments() != null) {
+            pinturaId = getArguments().getInt("pinturaId", -1);
         }
 
-        PinturaViewModel.Factory factory = new PinturaViewModel.Factory(requireActivity().getApplication(), pinturaId);
-        PinturaViewModel viewModel = new ViewModelProvider(this, factory).get(PinturaViewModel.class);
+        pinturaViewModel = new ViewModelProvider(this, new PinturaViewModel.Factory(requireActivity().getApplication(), pinturaId)).get(PinturaViewModel.class);
+        pinturaViewModel.getPintura().observe(getViewLifecycleOwner(), new Observer<Pintura>() {
+            @Override
+            public void onChanged(Pintura pintura) {
+                if (pintura != null) {
+                    title.setText(pintura.getPaintingName());
+                    description.setText(pintura.getDescription());
+                    Glide.with(getContext())
+                            .load(getResources().getIdentifier(pintura.getIconPath(), "drawable", getContext().getPackageName()))
+                            .placeholder(R.drawable.placeholder)
+                            .into(image);
 
-        viewModel.getPintura().observe(getViewLifecycleOwner(), pintura -> {
-            if (pintura != null) {
-                title.setText(pintura.getPaintingName());
-                description.setText(pintura.getDescription());
-                Glide.with(this)
-                        .load(pintura.getIconPath())
-                        .placeholder(R.drawable.placeholder)
-                        .into(image);
-            } else {
-                title.setText("Pintura no encontrada");
-                description.setText("");
-                image.setImageResource(R.drawable.placeholder); // Asegúrate de tener una imagen de marcador de posición adecuada
+                    audioFileName = pintura.getAudioPath(); // Obtener el nombre del archivo de audio
+                }
             }
         });
 
+        btnPlay.setOnClickListener(onClickListenerPlay());
+        btnPause.setOnClickListener(onClickListenerPause());
+        btnResume.setOnClickListener(onClickListenerResume());
+        btnStop.setOnClickListener(onClickListenerStop());
+
         return view;
+    }
+
+    private View.OnClickListener onClickListenerPlay() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startAudioService(AudioPlayService.PLAY);
+            }
+        };
+    }
+
+    private View.OnClickListener onClickListenerPause() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startAudioService(AudioPlayService.PAUSE);
+            }
+        };
+    }
+
+    private View.OnClickListener onClickListenerResume() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startAudioService(AudioPlayService.RESUME);
+            }
+        };
+    }
+
+    private View.OnClickListener onClickListenerStop() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startAudioService(AudioPlayService.STOP);
+            }
+        };
+    }
+
+    private void startAudioService(String command) {
+        Intent audioPlayServiceIntent = new Intent(getContext(), AudioPlayService.class);
+        audioPlayServiceIntent.putExtra(AudioPlayService.FILENAME, audioFileName);
+        audioPlayServiceIntent.putExtra(AudioPlayService.COMMAND, command);
+        requireActivity().startService(audioPlayServiceIntent);
     }
 }

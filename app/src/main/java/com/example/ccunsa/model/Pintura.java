@@ -26,6 +26,7 @@ public class Pintura {
         this.audioPath = audioPath;
     }
 
+    // Constructor sin ID (para asignación automática)
     @Ignore
     public Pintura(String paintingName, String authorName, String description, String galleryName, String iconPath, String audioPath) {
         this.paintingName = paintingName;
@@ -37,24 +38,63 @@ public class Pintura {
     }
 
     // Getters y setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
-    public String getPaintingName() { return paintingName; }
-    public void setPaintingName(String paintingName) { this.paintingName = paintingName; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public String getAuthorName() { return authorName; }
-    public void setAuthorName(String authorName) { this.authorName = authorName; }
+    public String getPaintingName() {
+        return paintingName;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setPaintingName(String paintingName) {
+        this.paintingName = paintingName;
+    }
 
-    public String getGalleryName() { return galleryName; }
-    public void setGalleryName(String galleryName) { this.galleryName = galleryName; }
+    public String getAuthorName() {
+        return authorName;
+    }
 
-    public String getIconPath() { return iconPath; }
-    public void setIconPath(String iconPath) { this.iconPath = iconPath; }
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
 
-    public String getAudioPath() { return audioPath; }
-    public void setAudioPath(String audioPath) { this.audioPath = audioPath; }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getGalleryName() {
+        return galleryName;
+    }
+
+    public void setGalleryName(String galleryName) {
+        this.galleryName = galleryName;
+    }
+
+    public String getIconPath() {
+        return iconPath;
+    }
+
+    public void setIconPath(String iconPath) {
+        this.iconPath = iconPath;
+    }
+
+    public String getAudioPath() {
+        return audioPath;
+    }
+
+    public void setAudioPath(String audioPath) {
+        this.audioPath = audioPath;
+    }
+
+    public String getAudioFileName() {
+        return audioPath;
+    }
 }

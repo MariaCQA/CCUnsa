@@ -31,7 +31,6 @@ public class PinturaRepository {
     }
 
     public LiveData<Pintura> getPinturaById(int pinturaId) {
-        Log.d("PinturaRepository", "getPinturaById: " + pinturaId);
         return pinturaDao.getPinturaById(pinturaId);
     }
 }

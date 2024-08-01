@@ -34,7 +34,8 @@ public class PinturaViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Pintura>> getPaintingsForGallery(String galleryName) {
-        return repository.getPaintingsForGallery(galleryName);
+        paintingsForGallery = repository.getPaintingsForGallery(galleryName);
+        return paintingsForGallery;
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
@@ -50,7 +51,6 @@ public class PinturaViewModel extends AndroidViewModel {
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            //noinspection unchecked
             return (T) new PinturaViewModel(application, pinturaId);
         }
     }
