@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.ccunsa.R;
 
-    package com.example.lab1;
+
 
 import android.content.Intent;
 import android.os.Bundle;
