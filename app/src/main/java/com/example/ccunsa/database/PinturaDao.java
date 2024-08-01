@@ -1,7 +1,9 @@
 package com.example.ccunsa.database;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.*;
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.Query;
 
 import com.example.ccunsa.model.Pintura;
 
@@ -9,18 +11,15 @@ import java.util.List;
 
 @Dao
 public interface PinturaDao {
-    @Query("SELECT * FROM pinturas")
-    LiveData<List<Pintura>> getAllPinturas();
-
-    @Query("SELECT * FROM pinturas WHERE id = :id")
-    LiveData<Pintura> getPinturaById(int id);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     void insert(Pintura pintura);
 
-    @Update
-    void update(Pintura pintura);
+    @Query("DELETE FROM pinturas")
+    void deleteAll();
 
-    @Delete
-    void delete(Pintura pintura);
+    @Query("SELECT * FROM pinturas ORDER BY paintingName ASC")
+    LiveData<List<Pintura>> getAllPaintings();
+
+    @Query("SELECT * FROM pinturas WHERE galleryName = :galleryName ORDER BY paintingName ASC")
+    LiveData<List<Pintura>> getPaintingsForGallery(String galleryName);
 }

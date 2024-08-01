@@ -1,6 +1,8 @@
 package com.example.ccunsa.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,13 +15,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.ccunsa.R;
-import com.example.ccunsa.view.fragments.RoomDetailFragment;
+import com.example.ccunsa.model.Pintura;
+import com.example.ccunsa.viewmodel.PinturaViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,18 +33,22 @@ public class InteractiveMapView extends View {
     private Paint backgroundPaint;
     private Paint whitePaint;
     private List<GalleryArea> galleryAreas;
+    private List<Pintura> pinturas;
 
     public InteractiveMapView(Context context) {
         super(context);
-        init();
+        init(context);
     }
 
     public InteractiveMapView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context);
     }
 
-    private void init() {
+    private void init(Context context) {
+        // Inicializa las pinturas como una lista vacía para evitar problemas de referencia nula
+        pinturas = new ArrayList<>();
+
         paint = new Paint();
         paint.setColor(Color.parseColor("#800000"));  // Guinda para el contorno de las habitaciones
         paint.setStyle(Paint.Style.STROKE);
@@ -106,6 +112,11 @@ public class InteractiveMapView extends View {
         drawRoom(canvas, "GALERIA VI", 0.70f, 0.52f, 1f, 0.78f, viewWidth, viewHeight);
         drawRoom(canvas, "VACIO", 0f, 0.52f, 0.26f, 0.78f, viewWidth, viewHeight, false, Color.parseColor("#800000"));
         drawRoom(canvas, "SS.HH", 0f, 0.78f, 0.24f, 0.85f, viewWidth, viewHeight, true, Color.CYAN);
+
+        // Dibuja los iconos de las pinturas en las galerías
+        for (GalleryArea area : galleryAreas) {
+            drawPaintingIcons(canvas, area.label, area.rect.left, area.rect.top, area.rect.right, area.rect.bottom);
+        }
     }
 
     private void drawRoom(Canvas canvas, String label, float leftRel, float topRel, float rightRel, float bottomRel, float viewWidth, float viewHeight) {
@@ -148,6 +159,30 @@ public class InteractiveMapView extends View {
         galleryAreas.add(new GalleryArea(label, new RectF(left, top, right, bottom)));
     }
 
+    private void drawPaintingIcons(Canvas canvas, String galleryName, float left, float top, float right, float bottom) {
+        if (pinturas == null) {
+            return; // Si pinturas es nulo, no hacemos nada
+        }
+
+        float iconSize = 100f; // Tamaño del icono
+        float padding = 20f; // Espacio entre iconos
+        float currentX = left + padding;
+        float currentY = top + padding;
+
+        for (Pintura pintura : pinturas) {
+            if (pintura.getGalleryName().equals(galleryName)) {
+                int resId = getResources().getIdentifier(pintura.getIconPath(), "drawable", getContext().getPackageName());
+                Bitmap icon = BitmapFactory.decodeResource(getResources(), resId);
+                canvas.drawBitmap(icon, currentX, currentY, null);
+                currentX += iconSize + padding;
+                if (currentX + iconSize > right) {
+                    currentX = left + padding;
+                    currentY += iconSize + padding;
+                }
+            }
+        }
+    }
+
     private void navigateToRoomDetail(String roomName) {
         FragmentActivity activity = (FragmentActivity) getContext();
         NavHostFragment navHostFragment = (NavHostFragment) activity.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
@@ -158,7 +193,6 @@ public class InteractiveMapView extends View {
             navController.navigate(R.id.action_map_to_roomDetail, args);
         }
     }
-
 
     private static class GalleryArea {
         String label;

@@ -1,49 +1,32 @@
 package com.example.ccunsa.repository;
 
 import android.app.Application;
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
+
 import com.example.ccunsa.database.AppDatabase;
-import com.example.ccunsa.database.PinturaDao;
 import com.example.ccunsa.model.Pintura;
+import com.example.ccunsa.database.PinturaDao;
+
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class PinturaRepository {
-
     private PinturaDao pinturaDao;
-    private LiveData<List<Pintura>> allPinturas;
-    private static ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private LiveData<List<Pintura>> allPaintings;
 
     public PinturaRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         pinturaDao = db.pinturaDao();
-        allPinturas = pinturaDao.getAllPinturas();
+        allPaintings = pinturaDao.getAllPaintings();
     }
 
-    public LiveData<List<Pintura>> getAllPinturas() {
-        return allPinturas;
+    public LiveData<List<Pintura>> getAllPaintings() {
+        return allPaintings;
     }
 
-    public LiveData<Pintura> getPinturaById(int id) {
-        return pinturaDao.getPinturaById(id);
-    }
-
-    public void insert(Pintura pintura) {
-        executorService.execute(() -> {
-            pinturaDao.insert(pintura);
-        });
-    }
-
-    public void update(Pintura pintura) {
-        executorService.execute(() -> {
-            pinturaDao.update(pintura);
-        });
-    }
-
-    public void delete(Pintura pintura) {
-        executorService.execute(() -> {
-            pinturaDao.delete(pintura);
-        });
+    public LiveData<List<Pintura>> getPaintingsForGallery(String galleryName) {
+        Log.d("PinturaRepository", "getPaintingsForGallery: " + galleryName);
+        return pinturaDao.getPaintingsForGallery(galleryName);
     }
 }

@@ -1,39 +1,41 @@
 package com.example.ccunsa.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.ccunsa.R;
 import com.example.ccunsa.model.Pintura;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class PinturaAdapter extends RecyclerView.Adapter<PinturaAdapter.PinturaViewHolder> {
-    private List<Pintura> pinturas = new ArrayList<>();
-    private OnItemClickListener listener;
+
+    private List<Pintura> pinturas;
+    private Context context;
+
+    public PinturaAdapter(Context context, List<Pintura> pinturas) {
+        this.context = context;
+        this.pinturas = pinturas;
+    }
 
     @NonNull
     @Override
     public PinturaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.pintura_item, parent, false);
-        return new PinturaViewHolder(itemView);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_pintura, parent, false);
+        return new PinturaViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PinturaViewHolder holder, int position) {
-        Pintura currentPintura = pinturas.get(position);
-        holder.textViewTitle.setText(currentPintura.getTitulo());
-        holder.itemView.setOnClickListener(v -> {
-            if (listener != null && position != RecyclerView.NO_POSITION) {
-                listener.onItemClick(pinturas.get(position));
-            }
-        });
+        Pintura pintura = pinturas.get(position);
+        holder.pinturaName.setText(pintura.getPaintingName());
+        holder.pinturaAuthor.setText(pintura.getAuthorName());
+        holder.pinturaDescription.setText(pintura.getDescription());
+        holder.pinturaIcon.setImageResource(context.getResources().getIdentifier(pintura.getIconPath(), "drawable", context.getPackageName()));
     }
 
     @Override
@@ -41,25 +43,23 @@ public class PinturaAdapter extends RecyclerView.Adapter<PinturaAdapter.PinturaV
         return pinturas.size();
     }
 
-    public void setPinturas(List<Pintura> pinturas) {
-        this.pinturas = pinturas;
-        notifyDataSetChanged();
-    }
-
-    class PinturaViewHolder extends RecyclerView.ViewHolder {
-        private TextView textViewTitle;
+    public static class PinturaViewHolder extends RecyclerView.ViewHolder {
+        TextView pinturaName;
+        TextView pinturaAuthor;
+        TextView pinturaDescription;
+        ImageView pinturaIcon;
 
         public PinturaViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewTitle = itemView.findViewById(R.id.text_view_title);
+            pinturaName = itemView.findViewById(R.id.pintura_name);
+            pinturaAuthor = itemView.findViewById(R.id.pintura_author);
+            pinturaDescription = itemView.findViewById(R.id.pintura_description);
+            pinturaIcon = itemView.findViewById(R.id.pintura_icon);
         }
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(Pintura pintura);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
+    public void updatePinturas(List<Pintura> nuevasPinturas) {
+        this.pinturas = nuevasPinturas;
+        notifyDataSetChanged();
     }
 }
