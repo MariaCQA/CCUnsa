@@ -1,6 +1,7 @@
 package com.example.ccunsa.model;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "pinturas")
@@ -14,7 +15,18 @@ public class Pintura {
     private String iconPath;
     private String audioPath;
 
-    // Constructor
+    // Constructor con ID (para asignación manual)
+    public Pintura(int id, String paintingName, String authorName, String description, String galleryName, String iconPath, String audioPath) {
+        this.id = id;
+        this.paintingName = paintingName;
+        this.authorName = authorName;
+        this.description = description;
+        this.galleryName = galleryName;
+        this.iconPath = iconPath;
+        this.audioPath = audioPath;
+    }
+
+    @Ignore
     public Pintura(String paintingName, String authorName, String description, String galleryName, String iconPath, String audioPath) {
         this.paintingName = paintingName;
         this.authorName = authorName;
@@ -24,7 +36,7 @@ public class Pintura {
         this.audioPath = audioPath;
     }
 
-    // Getters and Setters
+    // Getters y setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

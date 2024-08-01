@@ -15,13 +15,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.ccunsa.R;
 import com.example.ccunsa.model.Pintura;
-import com.example.ccunsa.viewmodel.PinturaViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +44,6 @@ public class InteractiveMapView extends View {
     }
 
     private void init(Context context) {
-        // Inicializa las pinturas como una lista vacía para evitar problemas de referencia nula
         pinturas = new ArrayList<>();
 
         paint = new Paint();
@@ -193,6 +190,7 @@ public class InteractiveMapView extends View {
             navController.navigate(R.id.action_map_to_roomDetail, args);
         }
     }
+
 
     private static class GalleryArea {
         String label;

@@ -22,4 +22,7 @@ public interface PinturaDao {
 
     @Query("SELECT * FROM pinturas WHERE galleryName = :galleryName ORDER BY paintingName ASC")
     LiveData<List<Pintura>> getPaintingsForGallery(String galleryName);
+
+    @Query("SELECT * FROM pinturas WHERE id = :pinturaId")
+    LiveData<Pintura> getPinturaById(int pinturaId);
 }

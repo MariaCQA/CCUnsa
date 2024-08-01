@@ -18,7 +18,11 @@
         android:id="@+id/SearchFragment"
         android:name="com.example.ccunsa.view.fragments.SearchFragment"
         android:label="Search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_pinturaFragment"
+            app:destination="@id/PinturaFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/QrFragment"
@@ -52,5 +56,10 @@
         android:id="@+id/RoomDetailFragment"
         android:name="com.example.ccunsa.view.fragments.RoomDetailFragment"
         android:label="Room Detail"
-        tools:layout="@layout/fragment_room_detail" />
+        tools:layout="@layout/fragment_room_detail">
+        <action
+            android:id="@+id/action_roomDetailFragment_to_pinturaFragment"
+            app:destination="@id/PinturaFragment" />
+    </fragment>
+
 </navigation>

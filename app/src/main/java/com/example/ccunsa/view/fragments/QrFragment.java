@@ -108,9 +108,14 @@ public class QrFragment extends Fragment {
                 .addOnSuccessListener(barcodes -> {
                     for (Barcode barcode : barcodes) {
                         String rawValue = barcode.getRawValue();
-                        if (rawValue.contains("pinturaID:")) {
+                        if (rawValue != null && rawValue.contains("pinturaID:")) {
                             String idStr = rawValue.split("pinturaID:")[1].trim();
-                            navigateToPinturaFragment(idStr);
+                            try {
+                                int pinturaId = Integer.parseInt(idStr);
+                                navigateToPinturaFragment(pinturaId);
+                            } catch (NumberFormatException e) {
+                                Toast.makeText(getActivity(), "Invalid pinturaID format", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                     imageProxy.close();
@@ -121,9 +126,9 @@ public class QrFragment extends Fragment {
                 });
     }
 
-    private void navigateToPinturaFragment(String pinturaId) {
+    private void navigateToPinturaFragment(int pinturaId) {
         Bundle args = new Bundle();
-        args.putString("pinturaId", pinturaId);
+        args.putInt("pinturaId", pinturaId);
         NavHostFragment.findNavController(QrFragment.this).navigate(R.id.action_show_pintura, args);
     }
 

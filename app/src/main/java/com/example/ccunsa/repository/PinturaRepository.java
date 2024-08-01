@@ -29,4 +29,9 @@ public class PinturaRepository {
         Log.d("PinturaRepository", "getPaintingsForGallery: " + galleryName);
         return pinturaDao.getPaintingsForGallery(galleryName);
     }
+
+    public LiveData<Pintura> getPinturaById(int pinturaId) {
+        Log.d("PinturaRepository", "getPinturaById: " + pinturaId);
+        return pinturaDao.getPinturaById(pinturaId);
+    }
 }

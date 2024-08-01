@@ -67,6 +67,8 @@ public abstract class AppDatabase extends RoomDatabase {
             dao.insert(
                     new Pintura("Mona Lisa VI", "Leonardo da Vinci", "Retrato de una mujer", "GALERIA II", "mona_lisa", "mona_lisa_audio")
             );
+            dao.insert(new Pintura(12345, "Yoset TEST", "Leonardo da Vinci", "Retrato de una mujer", "GALERIA I", "mona_lisa", "mona_lisa_audio")
+            );
         });
     }
 
@@ -82,7 +84,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 Pintura pintura1 = new Pintura("Mona Lisa", "Leonardo da Vinci", "Retrato de una mujer", "GALERIA I", "mona_lisa", "mona_lisa_audio");
                 Pintura pintura2 = new Pintura("La Noche Estrellada", "Vincent van Gogh", "Paisaje nocturno", "GALERIA I", "starry_night", "starry_night_audio");
                 Pintura pintura3 = new Pintura("El Grito", "Edvard Munch", "Figura gritando", "GALERIA II", "the_scream", "the_scream_audio");
-
+                //Pintura pintura4 = new Pintura(12345,"El Grito", "Edvard Munch", "Figura gritando", "GALERIA II", "the_scream", "the_scream_audio");
                 Log.d("AppDatabase", "Inserting: " + pintura1);
                 Log.d("AppDatabase", "Inserting: " + pintura2);
                 Log.d("AppDatabase", "Inserting: " + pintura3);
