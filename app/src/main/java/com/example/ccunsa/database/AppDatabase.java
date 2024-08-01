@@ -11,6 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.ccunsa.model.Pintura;
 import com.example.ccunsa.database.PinturaDao;
+import com.example.ccunsa.model.User;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,7 +19,7 @@ import java.util.concurrent.Executors;
 @Database(entities = {Pintura.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract PinturaDao pinturaDao();
-
+    public abstract UserDao userDao();
     private static volatile AppDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
@@ -87,10 +88,18 @@ public abstract class AppDatabase extends RoomDatabase {
                 Log.d("AppDatabase", "Inserting: " + pintura2);
                 Log.d("AppDatabase", "Inserting: " + pintura3);
 
+
                 dao.insert(pintura1);
                 dao.insert(pintura2);
                 dao.insert(pintura3);
+
+                // Añadir usuarios
+                UserDao userDao = INSTANCE.userDao();
+                userDao.insert(new User("user1", "password1"));
+                userDao.insert(new User("user2", "password2"));
             });
         }
     };
+
+
 }
