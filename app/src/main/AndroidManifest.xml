@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.ccunsa">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -20,16 +19,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CCUnsa"
         tools:targetApi="31">
-        <activity
-            android:name=".view.MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.AccountActivity"
-            android:exported="false" /> <!-- Agregar configuración del proveedor CameraX -->
+
+        <!-- Agregar configuración del proveedor CameraX -->
         <meta-data
             android:name="androidx.camera.lifecycle.ProcessCameraProvider"
             android:value="androidx.camera.camera2.Camera2Config$DefaultProvider" />
 
+        <activity
+            android:name=".view.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.AccountEntity"
+            android:exported="false" />
+        <activity
+            android:name=".view.AccountActivity"
+            android:exported="false" />
         <activity
             android:name=".view.LoginActivity"
             android:exported="true">
