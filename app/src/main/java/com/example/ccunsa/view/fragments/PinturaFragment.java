@@ -56,7 +56,6 @@ public class PinturaFragment extends Fragment {
                             .load(getResources().getIdentifier(pintura.getIconPath(), "drawable", getContext().getPackageName()))
                             .placeholder(R.drawable.placeholder)
                             .into(image);
-
                     audioFileName = pintura.getAudioPath(); // Obtener el nombre del archivo de audio
                 }
             }

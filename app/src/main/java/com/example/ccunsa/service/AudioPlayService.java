@@ -8,6 +8,8 @@ import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Build;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -29,11 +31,17 @@ public class AudioPlayService extends Service {
     public static final String STOP = "STOP";
 
     private MediaPlayer mediaPlayer;
+    private HandlerThread handlerThread;
+    private Handler handler;
 
     @Override
     public void onCreate() {
         super.onCreate();
         createNotificationChannel();
+
+        handlerThread = new HandlerThread("AudioPlayServiceHandler");
+        handlerThread.start();
+        handler = new Handler(handlerThread.getLooper());
     }
 
     @Override
@@ -41,21 +49,23 @@ public class AudioPlayService extends Service {
         String filename = intent.getStringExtra(FILENAME);
         String command = intent.getStringExtra(COMMAND);
 
-        switch (command) {
-            case PLAY:
-                startForegroundService();
-                playAudio(filename);
-                break;
-            case PAUSE:
-                pauseAudio();
-                break;
-            case RESUME:
-                resumeAudio();
-                break;
-            case STOP:
-                stopAudio();
-                break;
-        }
+        handler.post(() -> {
+            switch (command) {
+                case PLAY:
+                    startForegroundService();
+                    playAudio(filename);
+                    break;
+                case PAUSE:
+                    pauseAudio();
+                    break;
+                case RESUME:
+                    resumeAudio();
+                    break;
+                case STOP:
+                    stopAudio();
+                    break;
+            }
+        });
 
         return START_STICKY;
     }
@@ -135,6 +145,7 @@ public class AudioPlayService extends Service {
             mediaPlayer.release();
             mediaPlayer = null;
         }
+        handlerThread.quitSafely();
     }
 
     @Nullable
