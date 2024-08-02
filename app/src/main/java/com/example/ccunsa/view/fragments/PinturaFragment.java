@@ -30,6 +30,7 @@ public class PinturaFragment extends Fragment {
     private PinturaViewModel pinturaViewModel;
     private int pinturaId;
     private String audioFileName;
+    private String imageFilePath;
 
     @Nullable
     @Override
@@ -61,15 +62,29 @@ public class PinturaFragment extends Fragment {
                     // Log para verificar los datos de la pintura
                     Log.d(TAG, "Pintura data received: " + pintura.toString());
 
+                    // Mostrar los datos de la pintura
                     title.setText(pintura.getPaintingName());
                     description.setText(pintura.getDescription());
-                    Glide.with(getContext())
-                            .load(getResources().getIdentifier(pintura.getIconPath(), "drawable", getContext().getPackageName()))
-                            .placeholder(R.drawable.placeholder)
-                            .into(image);
+
+                    // Cargar imagen desde el path proporcionado
+                    imageFilePath = pintura.getIconPath();
+                    if (imageFilePath != null && !imageFilePath.isEmpty()) {
+                        Glide.with(getContext())
+                                .load(imageFilePath) // Usar el path del archivo
+                                .placeholder(R.drawable.placeholder) // Imagen por defecto
+                                .into(image);
+                    } else {
+                        image.setImageResource(R.drawable.placeholder); // Imagen por defecto si no hay path
+                    }
+
+                    // Configurar el archivo de audio
                     audioFileName = pintura.getAudioPath();
                 } else {
+                    // Mostrar mensaje de error si no se encuentra la pintura
                     Log.d(TAG, "No pintura data found for ID: " + pinturaId);
+                    title.setText("No existe pintura");
+                    description.setText("");
+                    image.setImageResource(R.drawable.placeholder); // Mostrar imagen por defecto
                 }
             }
         });

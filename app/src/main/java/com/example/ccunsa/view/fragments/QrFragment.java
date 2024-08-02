@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.OptIn;
@@ -28,6 +29,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
 import com.example.ccunsa.R;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
@@ -35,6 +37,7 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
 import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.barcode.common.Barcode;
+
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -80,6 +83,7 @@ public class QrFragment extends Fragment {
                 bindPreview(cameraProvider);
             } catch (ExecutionException | InterruptedException e) {
                 Toast.makeText(getActivity(), "Failed to start camera", Toast.LENGTH_SHORT).show();
+                Log.e("QrFragment", "Error starting camera", e); // Agregar logging para el error
             }
         }, ContextCompat.getMainExecutor(getActivity()));
     }
@@ -107,8 +111,11 @@ public class QrFragment extends Fragment {
         @SuppressLint("UnsafeExperimentalUsageError")
         Image mediaImage = imageProxy.getImage();
         if (mediaImage != null) {
-            InputImage image = InputImage.fromMediaImage(mediaImage, imageProxy.getImageInfo().getRotationDegrees());
-            scanBarcodes(image, imageProxy);
+            InputImage inputImage = InputImage.fromMediaImage(mediaImage, imageProxy.getImageInfo().getRotationDegrees());
+            scanBarcodes(inputImage, imageProxy);
+        } else {
+            Log.e("QrFragment", "MediaImage is null");
+            imageProxy.close();
         }
     }
 
@@ -120,6 +127,10 @@ public class QrFragment extends Fragment {
 
         scanner.process(image)
                 .addOnSuccessListener(barcodes -> {
+                    if (barcodes.isEmpty()) {
+                        Toast.makeText(getActivity(), "No barcodes found", Toast.LENGTH_SHORT).show();
+                        Log.d("QrFragment", "No barcodes detected");
+                    }
                     for (Barcode barcode : barcodes) {
                         String rawValue = barcode.getRawValue();
                         if (rawValue != null && rawValue.contains("pinturaID:")) {
@@ -129,6 +140,7 @@ public class QrFragment extends Fragment {
                                 navigateToPinturaFragment(pinturaId);
                             } catch (NumberFormatException e) {
                                 Toast.makeText(getActivity(), "Invalid pinturaID format", Toast.LENGTH_SHORT).show();
+                                Log.e("QrFragment", "Invalid pinturaID format", e);
                             }
                         }
                     }
@@ -136,6 +148,7 @@ public class QrFragment extends Fragment {
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(getActivity(), "Error processing QR code", Toast.LENGTH_SHORT).show();
+                    Log.e("QrFragment", "Error processing QR code", e);
                     imageProxy.close();
                 });
     }
@@ -149,7 +162,12 @@ public class QrFragment extends Fragment {
 
         // Obtener el NavController y navegar al fragmento destino
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-        navController.navigate(R.id.action_qrFragment_to_pinturaFragment, bundle);
+        try {
+            navController.navigate(R.id.action_qrFragment_to_pinturaFragment, bundle);
+        } catch (IllegalArgumentException e) {
+            Toast.makeText(getActivity(), "Navigation action not found", Toast.LENGTH_SHORT).show();
+            Log.e("QrFragment", "Navigation action not found", e);
+        }
     }
 
     @Override
