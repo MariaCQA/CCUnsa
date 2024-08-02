@@ -26,8 +26,8 @@ public class STARActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_staractivity);
 
-        Animation animacion1 = AnimationUtils.loadAnimation(this,R.id.desplazamiento_arriba);
-        Animation animacion2 = AnimationUtils.loadAnimation(this,R.id.desplazamiento_abajo);
+        Animation animacion1 = AnimationUtils.loadAnimation(this,R.anim.desplazamiento_arriba);
+        Animation animacion2 = AnimationUtils.loadAnimation(this,R.anim.desplazamiento_abajo);
 
         TextView letraText = findViewById(R.id.letras);
         ImageView imgView = findViewById(R.id.logo);

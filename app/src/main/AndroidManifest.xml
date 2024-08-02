@@ -29,7 +29,9 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
+        <activity
+            android:name=".view.RegisterActivity"
+            android:exported="false" />
         <activity
             android:name=".view.LoginActivity"
             android:exported="false" />
@@ -37,7 +39,7 @@
             android:name=".view.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".view.RegisterActivity"
+            android:name=".view.STARActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
