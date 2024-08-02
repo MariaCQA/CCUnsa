@@ -4,8 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/portada">
-
-
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
@@ -24,10 +22,10 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="122dp"
-        android:layout_marginTop="120dp"
-        android:layout_marginEnd="-44dp"
-        android:layout_marginBottom="478dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="118dp"
+        android:layout_marginEnd="74dp"
+        android:layout_marginBottom="480dp"
         android:fontFamily="@font/agbalumo"
         android:text="CENTRO CULTURAL"
         android:textColor="#000000"
