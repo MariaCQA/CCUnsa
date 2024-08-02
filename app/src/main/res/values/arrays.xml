@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="gallery_array">
+        <item>Galería I</item>
+        <item>Galería II</item>
+        <item>Galería III</item>
+        <!-- Agrega más galerías según sea necesario -->
+    </string-array>
+
+    <string-array name="author_array">
+        <item>Leonardo da Vinci</item>
+        <item>Caspar David Friedrich</item>
+        <item>Yoset</item>
+        <!-- Agrega más autores según sea necesario -->
+    </string-array>
+</resources>

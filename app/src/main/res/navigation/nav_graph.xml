@@ -47,6 +47,16 @@
             app:destination="@id/PinturaFragment" />
     </fragment>
 
+    <!-- Fragmento List con acción a PinturaFragment -->
+    <fragment
+        android:id="@+id/ListFragment"
+        android:name="com.example.ccunsa.view.fragments.ListFragment"
+        android:label="List"
+        tools:layout="@layout/fragment_list">
+        <action
+            android:id="@+id/action_listFragment_to_pinturaFragment"
+            app:destination="@id/PinturaFragment" />
+    </fragment>
 
     <!-- Fragmentos adicionales -->
     <fragment

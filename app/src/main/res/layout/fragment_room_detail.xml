@@ -1,27 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mostaza"
-    tools:context=".view.fragments.RoomDetailFragment">
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <TextView
         android:id="@+id/room_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:textSize="24sp" />
+
+    <com.example.ccunsa.view.PaintingCanvasView
+        android:id="@+id/paintingCanvasView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:padding="16dp" />
 
-    <GridLayout
-        android:id="@+id/gridLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="56dp"
-        android:padding="16dp"
-        android:columnCount="2"
-        android:rowCount="4"
-        android:orientation="horizontal">
-    </GridLayout>
-</FrameLayout>
+</LinearLayout>

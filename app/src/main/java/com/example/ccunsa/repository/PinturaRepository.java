@@ -33,4 +33,8 @@ public class PinturaRepository {
     public LiveData<Pintura> getPinturaById(int pinturaId) {
         return pinturaDao.getPinturaById(pinturaId);
     }
+
+    public LiveData<List<Pintura>> getFilteredPaintings(String query, String galleryName, String authorName) {
+        return pinturaDao.getFilteredPaintings(query, galleryName, authorName);
+    }
 }

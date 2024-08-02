@@ -54,7 +54,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
             dao.deleteAll(); // Opcional: Limpiar la tabla antes de insertar
             dao.insert(
-                    new Pintura("Mona Lisa I", "Leonardo da Vinci", "Retrato de una mujer", "GALERIA I", "mona_lisa", "mona_lisa_audio")
+                    new Pintura("Mona Lisa I", "Leonardo da Vinci", "Retrato de una mujer", "GALERIA I", "mona_lisa", "la_ultima_cena")
             );
             dao.insert(
                     new Pintura("Mona Lisa II", "Leonardo da Vinci", "Retrato de una mujer", "GALERIA I", "mona_lisa", "mona_lisa_audio")
@@ -78,7 +78,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     new Pintura("Mona Lisa VI", "Leonardo da Vinci", "Retrato de una mujer", "GALERIA I", "mona_lisa", "mona_lisa_audio")
             );
             dao.insert(
-                    new Pintura(12345,"yoset", "Leonardo da Vinci", "Retrato de una mujer", "GALERIA II", "portada", "las_meninas")
+                    new Pintura(12345,"yoset", "Leonardo da Vinci", "Retrato de una mujer", "GALERIA II", "mona_lisa", "las_meninas")
             );
 
         });
@@ -110,4 +110,7 @@ public abstract class AppDatabase extends RoomDatabase {
             });
         }
     };
+
+    private static class Callback extends RoomDatabase.Callback {
+    }
 }

@@ -19,6 +19,9 @@ public interface PinturaDao {
     @Query("SELECT * FROM pinturas WHERE id = :pinturaId")
     LiveData<Pintura> getPinturaById(int pinturaId);
 
+    @Query("SELECT * FROM pinturas WHERE (galleryName LIKE '%' || :galleryName || '%' OR :galleryName IS NULL) AND (authorName LIKE '%' || :authorName || '%' OR :authorName IS NULL) AND (paintingName LIKE '%' || :query || '%' OR :query IS NULL)")
+    LiveData<List<Pintura>> getFilteredPaintings(String query, String galleryName, String authorName);
+
     @Insert
     void insert(Pintura... pinturas);
 

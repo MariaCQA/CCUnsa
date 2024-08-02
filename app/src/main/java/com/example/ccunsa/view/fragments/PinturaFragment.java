@@ -1,6 +1,10 @@
 package com.example.ccunsa.view.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,15 +16,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.bumptech.glide.Glide;
 import com.example.ccunsa.R;
 import com.example.ccunsa.model.Pintura;
 import com.example.ccunsa.service.AudioPlayService;
 import com.example.ccunsa.viewmodel.PinturaViewModel;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class PinturaFragment extends Fragment {
     private static final String TAG = "PinturaFragment";
@@ -31,7 +38,11 @@ public class PinturaFragment extends Fragment {
     private int pinturaId;
     private String audioFileName;
     private String imageFilePath;
+    private ExecutorService executorService;
 
+    private BroadcastReceiver audioCommandReceiver;
+
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,6 +55,9 @@ public class PinturaFragment extends Fragment {
         Button btnPause = view.findViewById(R.id.pause_button);
         Button btnResume = view.findViewById(R.id.resume_button);
         Button btnStop = view.findViewById(R.id.stop_button);
+
+        // Inicializar ExecutorService
+        executorService = Executors.newSingleThreadExecutor();
 
         // Obtener el argumento pinturaId y agregar un log para verificar el valor
         if (getArguments() != null) {
@@ -69,10 +83,14 @@ public class PinturaFragment extends Fragment {
                     // Cargar imagen desde el path proporcionado
                     imageFilePath = pintura.getIconPath();
                     if (imageFilePath != null && !imageFilePath.isEmpty()) {
-                        Glide.with(getContext())
-                                .load(imageFilePath) // Usar el path del archivo
-                                .placeholder(R.drawable.placeholder) // Imagen por defecto
-                                .into(image);
+                        // Convertir el nombre del recurso drawable a un identificador de recurso
+                        int resId = getResources().getIdentifier(imageFilePath, "drawable", getContext().getPackageName());
+                        if (resId != 0) {
+                            image.setImageResource(resId); // Usar el identificador del recurso
+                        } else {
+                            Log.d(TAG, "Drawable resource not found for path: " + imageFilePath);
+                            image.setImageResource(R.drawable.placeholder); // Imagen por defecto si no se encuentra
+                        }
                     } else {
                         image.setImageResource(R.drawable.placeholder); // Imagen por defecto si no hay path
                     }
@@ -95,6 +113,22 @@ public class PinturaFragment extends Fragment {
         btnResume.setOnClickListener(onClickListenerResume());
         btnStop.setOnClickListener(onClickListenerStop());
 
+        // Registrar BroadcastReceiver
+        audioCommandReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String command = intent.getAction();
+                handleAudioCommand(command);
+            }
+        };
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(AudioPlayService.PLAY);
+        filter.addAction(AudioPlayService.PAUSE);
+        filter.addAction(AudioPlayService.RESUME);
+        filter.addAction(AudioPlayService.STOP);
+        requireContext().registerReceiver(audioCommandReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+
         return view;
     }
 
@@ -102,6 +136,7 @@ public class PinturaFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "Play button clicked");
                 startAudioService(AudioPlayService.PLAY);
             }
         };
@@ -111,6 +146,7 @@ public class PinturaFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "Pause button clicked");
                 startAudioService(AudioPlayService.PAUSE);
             }
         };
@@ -120,6 +156,7 @@ public class PinturaFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "Resume button clicked");
                 startAudioService(AudioPlayService.RESUME);
             }
         };
@@ -129,15 +166,46 @@ public class PinturaFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "Stop button clicked");
                 startAudioService(AudioPlayService.STOP);
             }
         };
     }
 
     private void startAudioService(String command) {
-        Intent audioPlayServiceIntent = new Intent(getContext(), AudioPlayService.class);
-        audioPlayServiceIntent.putExtra(AudioPlayService.FILENAME, audioFileName);
-        audioPlayServiceIntent.putExtra(AudioPlayService.COMMAND, command);
-        requireActivity().startService(audioPlayServiceIntent);
+        executorService.execute(() -> {
+            Intent audioPlayServiceIntent = new Intent(getContext(), AudioPlayService.class);
+            audioPlayServiceIntent.putExtra(AudioPlayService.FILENAME, audioFileName);
+            audioPlayServiceIntent.putExtra(AudioPlayService.COMMAND, command);
+            requireActivity().startService(audioPlayServiceIntent);
+        });
+    }
+
+    private void handleAudioCommand(String command) {
+        switch (command) {
+            case AudioPlayService.PLAY:
+                Log.d(TAG, "Handling PLAY command from notification");
+                onClickListenerPlay().onClick(null);
+                break;
+            case AudioPlayService.PAUSE:
+                Log.d(TAG, "Handling PAUSE command from notification");
+                onClickListenerPause().onClick(null);
+                break;
+            case AudioPlayService.RESUME:
+                Log.d(TAG, "Handling RESUME command from notification");
+                onClickListenerResume().onClick(null);
+                break;
+            case AudioPlayService.STOP:
+                Log.d(TAG, "Handling STOP command from notification");
+                onClickListenerStop().onClick(null);
+                break;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        executorService.shutdown(); // Asegurarse de que el ExecutorService se cierre correctamente
+        requireContext().unregisterReceiver(audioCommandReceiver);
     }
 }
