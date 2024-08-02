@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:startDestination="@id/MapFragment">
 
+    <!-- Fragmento principal, punto de inicio -->
     <fragment
         android:id="@+id/MapFragment"
         android:name="com.example.ccunsa.view.fragments.MapFragment"
@@ -14,6 +15,7 @@
             app:destination="@id/RoomDetailFragment" />
     </fragment>
 
+    <!-- Fragmento de búsqueda -->
     <fragment
         android:id="@+id/SearchFragment"
         android:name="com.example.ccunsa.view.fragments.SearchFragment"
@@ -24,16 +26,29 @@
             app:destination="@id/PinturaFragment" />
     </fragment>
 
+    <!-- Fragmento de pintura con argumento -->
+    <fragment
+        android:id="@+id/PinturaFragment"
+        android:name="com.example.ccunsa.view.fragments.PinturaFragment"
+        android:label="PinturaFragment">
+        <argument
+            android:name="pinturaId"
+            app:argType="integer" />
+    </fragment>
+
+    <!-- Fragmento QR con acción a PinturaFragment -->
     <fragment
         android:id="@+id/QrFragment"
         android:name="com.example.ccunsa.view.fragments.QrFragment"
         android:label="QR"
         tools:layout="@layout/fragment_qr">
         <action
-            android:id="@+id/action_show_pintura"
+            android:id="@+id/action_qrFragment_to_pinturaFragment"
             app:destination="@id/PinturaFragment" />
     </fragment>
 
+
+    <!-- Fragmentos adicionales -->
     <fragment
         android:id="@+id/FavoriteFragment"
         android:name="com.example.ccunsa.view.fragments.FavoriteFragment"
@@ -45,12 +60,6 @@
         android:name="com.example.ccunsa.view.fragments.SettingFragment"
         android:label="Setting"
         tools:layout="@layout/fragment_setting" />
-
-    <fragment
-        android:id="@+id/PinturaFragment"
-        android:name="com.example.ccunsa.view.fragments.PinturaFragment"
-        android:label="Pintura"
-        tools:layout="@layout/fragment_pintura" />
 
     <fragment
         android:id="@+id/RoomDetailFragment"

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,6 @@ import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ExperimentalGetImage;
 import androidx.camera.core.ImageAnalysis;
-import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
@@ -26,7 +26,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import com.example.ccunsa.R;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mlkit.vision.barcode.BarcodeScanner;
@@ -49,6 +50,7 @@ public class QrFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_qr, container, false);
         previewView = view.findViewById(R.id.preview_view);
 
+        // Verificar permisos de cámara
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
         } else {
@@ -56,6 +58,18 @@ public class QrFragment extends Fragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startCamera();
+            } else {
+                Toast.makeText(getActivity(), "Camera permission is required to use this feature.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void startCamera() {
@@ -88,7 +102,7 @@ public class QrFragment extends Fragment {
         Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview, imageAnalysis);
     }
 
-    @OptIn(markerClass = androidx.camera.core.ExperimentalGetImage.class)
+    @OptIn(markerClass = ExperimentalGetImage.class)
     private void analyzeImage(@NonNull ImageProxy imageProxy) {
         @SuppressLint("UnsafeExperimentalUsageError")
         Image mediaImage = imageProxy.getImage();
@@ -127,9 +141,15 @@ public class QrFragment extends Fragment {
     }
 
     private void navigateToPinturaFragment(int pinturaId) {
-        Bundle args = new Bundle();
-        args.putInt("pinturaId", pinturaId);
-        NavHostFragment.findNavController(QrFragment.this).navigate(R.id.action_show_pintura, args);
+        Log.d("QrFragment", "Navigating to PinturaFragment with pinturaId: " + pinturaId); // Log navigation
+
+        // Crear un Bundle y agregar el argumento
+        Bundle bundle = new Bundle();
+        bundle.putInt("pinturaId", pinturaId);
+
+        // Obtener el NavController y navegar al fragmento destino
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+        navController.navigate(R.id.action_qrFragment_to_pinturaFragment, bundle);
     }
 
     @Override
