@@ -2,6 +2,7 @@ package com.example.ccunsa.view.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +23,14 @@ import com.example.ccunsa.service.AudioPlayService;
 import com.example.ccunsa.viewmodel.PinturaViewModel;
 
 public class PinturaFragment extends Fragment {
+    private static final String TAG = "PinturaFragment";
+
     private TextView title, description;
     private ImageView image;
     private PinturaViewModel pinturaViewModel;
     private int pinturaId;
     private String audioFileName;
+    private String imageFilePath;
 
     @Nullable
     @Override
@@ -41,26 +45,51 @@ public class PinturaFragment extends Fragment {
         Button btnResume = view.findViewById(R.id.resume_button);
         Button btnStop = view.findViewById(R.id.stop_button);
 
+        // Obtener el argumento pinturaId y agregar un log para verificar el valor
         if (getArguments() != null) {
             pinturaId = getArguments().getInt("pinturaId", -1);
+            Log.d(TAG, "Received pinturaId: " + pinturaId);
+        } else {
+            Log.d(TAG, "No arguments received");
         }
 
+        // Inicializar el ViewModel con el pinturaId y observar los cambios en los datos
         pinturaViewModel = new ViewModelProvider(this, new PinturaViewModel.Factory(requireActivity().getApplication(), pinturaId)).get(PinturaViewModel.class);
         pinturaViewModel.getPintura().observe(getViewLifecycleOwner(), new Observer<Pintura>() {
             @Override
             public void onChanged(Pintura pintura) {
                 if (pintura != null) {
+                    // Log para verificar los datos de la pintura
+                    Log.d(TAG, "Pintura data received: " + pintura.toString());
+
+                    // Mostrar los datos de la pintura
                     title.setText(pintura.getPaintingName());
                     description.setText(pintura.getDescription());
-                    Glide.with(getContext())
-                            .load(getResources().getIdentifier(pintura.getIconPath(), "drawable", getContext().getPackageName()))
-                            .placeholder(R.drawable.placeholder)
-                            .into(image);
-                    audioFileName = pintura.getAudioPath(); // Obtener el nombre del archivo de audio
+
+                    // Cargar imagen desde el path proporcionado
+                    imageFilePath = pintura.getIconPath();
+                    if (imageFilePath != null && !imageFilePath.isEmpty()) {
+                        Glide.with(getContext())
+                                .load(imageFilePath) // Usar el path del archivo
+                                .placeholder(R.drawable.placeholder) // Imagen por defecto
+                                .into(image);
+                    } else {
+                        image.setImageResource(R.drawable.placeholder); // Imagen por defecto si no hay path
+                    }
+
+                    // Configurar el archivo de audio
+                    audioFileName = pintura.getAudioPath();
+                } else {
+                    // Mostrar mensaje de error si no se encuentra la pintura
+                    Log.d(TAG, "No pintura data found for ID: " + pinturaId);
+                    title.setText("No existe pintura");
+                    description.setText("");
+                    image.setImageResource(R.drawable.placeholder); // Mostrar imagen por defecto
                 }
             }
         });
 
+        // Configurar los botones de control de audio
         btnPlay.setOnClickListener(onClickListenerPlay());
         btnPause.setOnClickListener(onClickListenerPause());
         btnResume.setOnClickListener(onClickListenerResume());
