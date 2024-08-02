@@ -6,16 +6,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.ccunsa.R;
 import com.example.ccunsa.model.Pintura;
+
 import java.util.List;
 
 public class PinturaAdapter extends RecyclerView.Adapter<PinturaAdapter.PinturaViewHolder> {
 
     private List<Pintura> pinturas;
-    private Context context;
+    private final Context context;
     private final OnItemClickListener listener;
 
     public interface OnItemClickListener {
@@ -41,13 +44,21 @@ public class PinturaAdapter extends RecyclerView.Adapter<PinturaAdapter.PinturaV
         holder.pinturaName.setText(pintura.getPaintingName());
         holder.pinturaAuthor.setText(pintura.getAuthorName());
         holder.pinturaDescription.setText(pintura.getDescription());
-        holder.pinturaIcon.setImageResource(context.getResources().getIdentifier(pintura.getIconPath(), "drawable", context.getPackageName()));
+
+        int iconId = context.getResources().getIdentifier(pintura.getIconPath(), "drawable", context.getPackageName());
+        holder.pinturaIcon.setImageResource(iconId);
+
         holder.itemView.setOnClickListener(v -> listener.onItemClick(pintura));
     }
 
     @Override
     public int getItemCount() {
         return pinturas.size();
+    }
+
+    public void updatePinturas(List<Pintura> nuevasPinturas) {
+        this.pinturas = nuevasPinturas;
+        notifyDataSetChanged();
     }
 
     public static class PinturaViewHolder extends RecyclerView.ViewHolder {
@@ -63,10 +74,5 @@ public class PinturaAdapter extends RecyclerView.Adapter<PinturaAdapter.PinturaV
             pinturaDescription = itemView.findViewById(R.id.pintura_description);
             pinturaIcon = itemView.findViewById(R.id.pintura_icon);
         }
-    }
-
-    public void updatePinturas(List<Pintura> nuevasPinturas) {
-        this.pinturas = nuevasPinturas;
-        notifyDataSetChanged();
     }
 }

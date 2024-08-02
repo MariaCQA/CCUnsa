@@ -53,33 +53,245 @@ public abstract class AppDatabase extends RoomDatabase {
             UserDao udao = userDao();
 
             dao.deleteAll(); // Opcional: Limpiar la tabla antes de insertar
-            dao.insert(
-                    new Pintura("Mona Lisa I", "Leonardo da Vinci", "Retrato de una mujer", "GALERIA I", "mona_lisa", "la_ultima_cena")
+// Definir las pinturas con descripciones ajustadas
+            Pintura monaLisa = new Pintura(
+                    "Mona Lisa",
+                    "Leonardo da Vinci",
+                    "La Mona Lisa es una pintura de Leonardo da Vinci, creada entre 1503 y 1506. Conocida por su enigmática sonrisa y su mirada cautivadora, esta obra maestra del Renacimiento destaca por su técnica de sfumato, que permite una transición suave entre colores y sombras. La Mona Lisa se exhibe en el Museo del Louvre, en París, y su historia incluye robos y vandalismos que han aumentado su leyenda. La pintura es un ícono perdurable del arte y un ejemplo sobresaliente del genio creativo de da Vinci.",
+                    "GALERIA I",
+                    "mona_lisa",
+                    "mona_lisa"
             );
-            dao.insert(
-                    new Pintura("Mona Lisa II", "Leonardo da Vinci", "Retrato de una mujer", "GALERIA I", "mona_lisa", "mona_lisa_audio")
+
+            Pintura lasMeninas = new Pintura(
+                    "Las Meninas",
+                    "Diego Velázquez",
+                    "Las Meninas es una pintura de Diego Velázquez, realizada en 1656. Representa una escena en el palacio real de Madrid, con Velázquez pintándose a sí mismo trabajando en su taller. La complejidad de la composición, la interacción entre los personajes y el uso de la perspectiva han sido objeto de numerosos análisis críticos. La obra desafía las convenciones del arte de su época, proporcionando una reflexión sobre la percepción y la realidad en la pintura.",
+                    "GALERIA II",
+                    "las_meninas",
+                    "las_meninas"
             );
-            dao.insert(
-                    new Pintura("Mona Lisa III", "Leonardo da Vinci", "Retrato de una mujer", "GALERIA I", "mona_lisa", "mona_lisa_audio")
+
+            Pintura ultimaCena = new Pintura(
+                    "La Última Cena",
+                    "Leonardo da Vinci",
+                    "La Última Cena es un fresco de Leonardo da Vinci, pintado entre 1495 y 1498. Representa el momento en que Jesucristo revela a sus discípulos que uno de ellos lo traicionará. La pintura destaca por su innovador uso de la perspectiva y su capacidad para transmitir emociones profundas. Aunque ha sido restaurada y dañada a lo largo de los siglos, sigue siendo un ejemplo icónico del genio artístico de da Vinci y un testimonio de su habilidad para captar momentos humanos significativos.",
+                    "GALERIA III",
+                    "la_ultima_cena",
+                    "la_ultima_cena"
             );
-            dao.insert(
-                    new Pintura("Mona Lisa IV", "Leonardo da Vinci", "Retrato de una mujer", "GALERIA I", "mona_lisa", "mona_lisa_audio")
+
+            Pintura caminante = new Pintura(
+                    "El Caminante",
+                    "Caspar David Friedrich",
+                    "El Caminante es una pintura del Romanticismo por Caspar David Friedrich. Muestra a un hombre de espaldas contemplando un vasto paisaje montañoso. La obra refleja la inmensidad del paisaje y la capacidad de Friedrich para evocar emociones profundas mediante la representación de la naturaleza. Aunque no es tan conocida como otras obras del Romanticismo, destaca por su capacidad para capturar la grandeza y el misterio del paisaje.",
+                    "GALERIA IV",
+                    "el_caminante",
+                    "el_caminante"
             );
-            dao.insert(
-                    new Pintura("Mona Lisa V", "Leonardo da Vinci", "Retrato de una mujer", "GALERIA I", "mona_lisa", "mona_lisa_audio")
-            );
-            dao.insert(
-                    new Pintura("Mona Lisa VI", "Leonardo da Vinci", "Retrato de una mujer", "GALERIA I", "mona_lisa", "mona_lisa_audio")
-            );
-            dao.insert(
-                    new Pintura("Mona Lisa VI", "Leonardo da Vinci", "Retrato de una mujer", "GALERIA I", "the_scream", "mona_lisa_audio")
-            );
-            dao.insert(
-                    new Pintura("Mona Lisa VI", "Leonardo da Vinci", "Retrato de una mujer", "GALERIA I", "mona_lisa", "mona_lisa_audio")
-            );
-            dao.insert(
-                    new Pintura(12345,"yoset", "Leonardo da Vinci", "Retrato de una mujer", "GALERIA II", "mona_lisa", "las_meninas")
-            );
+
+
+// Insertar pinturas en las galerías I a VI
+            dao.insert(new Pintura(
+                    monaLisa.getPaintingName(),    // Cambiado de getTitulo() a getPaintingName()
+                    monaLisa.getAuthorName(),      // Cambiado de getAutor() a getAuthorName()
+                    monaLisa.getDescription(),     // Correcto, coincide con getDescription()
+                    "GALERIA I",
+                    monaLisa.getIconPath(),        // Cambiado de getImagen() a getIconPath()
+                    monaLisa.getAudioPath()        // Cambiado de getArchivo() a getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    monaLisa.getPaintingName(),
+                    monaLisa.getAuthorName(),
+                    monaLisa.getDescription(),
+                    "GALERIA II",
+                    monaLisa.getIconPath(),
+                    monaLisa.getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    monaLisa.getPaintingName(),
+                    monaLisa.getAuthorName(),
+                    monaLisa.getDescription(),
+                    "GALERIA III",
+                    monaLisa.getIconPath(),
+                    monaLisa.getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    monaLisa.getPaintingName(),
+                    monaLisa.getAuthorName(),
+                    monaLisa.getDescription(),
+                    "GALERIA IV",
+                    monaLisa.getIconPath(),
+                    monaLisa.getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    monaLisa.getPaintingName(),
+                    monaLisa.getAuthorName(),
+                    monaLisa.getDescription(),
+                    "GALERIA V",
+                    monaLisa.getIconPath(),
+                    monaLisa.getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    monaLisa.getPaintingName(),
+                    monaLisa.getAuthorName(),
+                    monaLisa.getDescription(),
+                    "GALERIA VI",
+                    monaLisa.getIconPath(),
+                    monaLisa.getAudioPath()
+            ));
+
+            dao.insert(new Pintura(
+                    lasMeninas.getPaintingName(),
+                    lasMeninas.getAuthorName(),
+                    lasMeninas.getDescription(),
+                    "GALERIA I",
+                    lasMeninas.getIconPath(),
+                    lasMeninas.getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    lasMeninas.getPaintingName(),
+                    lasMeninas.getAuthorName(),
+                    lasMeninas.getDescription(),
+                    "GALERIA II",
+                    lasMeninas.getIconPath(),
+                    lasMeninas.getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    lasMeninas.getPaintingName(),
+                    lasMeninas.getAuthorName(),
+                    lasMeninas.getDescription(),
+                    "GALERIA III",
+                    lasMeninas.getIconPath(),
+                    lasMeninas.getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    lasMeninas.getPaintingName(),
+                    lasMeninas.getAuthorName(),
+                    lasMeninas.getDescription(),
+                    "GALERIA IV",
+                    lasMeninas.getIconPath(),
+                    lasMeninas.getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    lasMeninas.getPaintingName(),
+                    lasMeninas.getAuthorName(),
+                    lasMeninas.getDescription(),
+                    "GALERIA V",
+                    lasMeninas.getIconPath(),
+                    lasMeninas.getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    lasMeninas.getPaintingName(),
+                    lasMeninas.getAuthorName(),
+                    lasMeninas.getDescription(),
+                    "GALERIA VI",
+                    lasMeninas.getIconPath(),
+                    lasMeninas.getAudioPath()
+            ));
+
+            dao.insert(new Pintura(
+                    ultimaCena.getPaintingName(),
+                    ultimaCena.getAuthorName(),
+                    ultimaCena.getDescription(),
+                    "GALERIA I",
+                    ultimaCena.getIconPath(),
+                    ultimaCena.getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    ultimaCena.getPaintingName(),
+                    ultimaCena.getAuthorName(),
+                    ultimaCena.getDescription(),
+                    "GALERIA II",
+                    ultimaCena.getIconPath(),
+                    ultimaCena.getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    ultimaCena.getPaintingName(),
+                    ultimaCena.getAuthorName(),
+                    ultimaCena.getDescription(),
+                    "GALERIA III",
+                    ultimaCena.getIconPath(),
+                    ultimaCena.getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    ultimaCena.getPaintingName(),
+                    ultimaCena.getAuthorName(),
+                    ultimaCena.getDescription(),
+                    "GALERIA IV",
+                    ultimaCena.getIconPath(),
+                    ultimaCena.getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    ultimaCena.getPaintingName(),
+                    ultimaCena.getAuthorName(),
+                    ultimaCena.getDescription(),
+                    "GALERIA V",
+                    ultimaCena.getIconPath(),
+                    ultimaCena.getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    ultimaCena.getPaintingName(),
+                    ultimaCena.getAuthorName(),
+                    ultimaCena.getDescription(),
+                    "GALERIA VI",
+                    ultimaCena.getIconPath(),
+                    ultimaCena.getAudioPath()
+            ));
+
+            dao.insert(new Pintura(
+                    caminante.getPaintingName(),
+                    caminante.getAuthorName(),
+                    caminante.getDescription(),
+                    "GALERIA I",
+                    caminante.getIconPath(),
+                    caminante.getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    caminante.getPaintingName(),
+                    caminante.getAuthorName(),
+                    caminante.getDescription(),
+                    "GALERIA II",
+                    caminante.getIconPath(),
+                    caminante.getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    caminante.getPaintingName(),
+                    caminante.getAuthorName(),
+                    caminante.getDescription(),
+                    "GALERIA III",
+                    caminante.getIconPath(),
+                    caminante.getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    caminante.getPaintingName(),
+                    caminante.getAuthorName(),
+                    caminante.getDescription(),
+                    "GALERIA IV",
+                    caminante.getIconPath(),
+                    caminante.getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    caminante.getPaintingName(),
+                    caminante.getAuthorName(),
+                    caminante.getDescription(),
+                    "GALERIA V",
+                    caminante.getIconPath(),
+                    caminante.getAudioPath()
+            ));
+            dao.insert(new Pintura(
+                    caminante.getPaintingName(),
+                    caminante.getAuthorName(),
+                    caminante.getDescription(),
+                    "GALERIA VI",
+                    caminante.getIconPath(),
+                    caminante.getAudioPath()
+            ));
+
+
+// Fin de la carga de datos
+
+
 
         });
     }

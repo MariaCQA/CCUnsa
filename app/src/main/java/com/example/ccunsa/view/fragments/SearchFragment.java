@@ -47,21 +47,24 @@ public class SearchFragment extends Fragment {
         });
         recyclerView.setAdapter(pinturaAdapter);
 
-        pinturaViewModel = new ViewModelProvider(this).get(PinturaViewModel.class);
+        // Obtener el ID de pintura de los argumentos
+        int pinturaId = getArguments() != null ? getArguments().getInt("pinturaId", -1) : -1;
+
+        // Usar la Factory para crear el ViewModel
+        PinturaViewModel.Factory factory = new PinturaViewModel.Factory(getActivity().getApplication(), pinturaId);
+        pinturaViewModel = new ViewModelProvider(this, factory).get(PinturaViewModel.class);
+
         if (getArguments() != null) {
             String roomName = getArguments().getString("roomName");
             roomNameTextView.setText(roomName);
             Log.d("SearchFragment", "Room Name: " + roomName);
 
-            pinturaViewModel.getPaintingsForGallery(roomName).observe(getViewLifecycleOwner(), new Observer<List<Pintura>>() {
-                @Override
-                public void onChanged(List<Pintura> pinturas) {
-                    Log.d("SearchFragment", "Number of paintings: " + pinturas.size());
-                    for (Pintura pintura : pinturas) {
-                        Log.d("SearchFragment", "Pintura: " + pintura.getPaintingName() + ", IconPath: " + pintura.getIconPath());
-                    }
-                    pinturaAdapter.updatePinturas(pinturas);
+            pinturaViewModel.getPaintingsForGallery(roomName).observe(getViewLifecycleOwner(), pinturas -> {
+                Log.d("SearchFragment", "Number of paintings: " + pinturas.size());
+                for (Pintura pintura : pinturas) {
+                    Log.d("SearchFragment", "Pintura: " + pintura.getPaintingName() + ", IconPath: " + pintura.getIconPath());
                 }
+                pinturaAdapter.updatePinturas(pinturas);
             });
         }
 

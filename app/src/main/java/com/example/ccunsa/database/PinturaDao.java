@@ -27,4 +27,8 @@ public interface PinturaDao {
 
     @Query("DELETE FROM pinturas")
     void deleteAll();
+
+    @Query("SELECT * FROM pinturas WHERE paintingName LIKE '%' || :query || '%'")
+    LiveData<List<Pintura>> getPaintingsByName(String query);
+
 }

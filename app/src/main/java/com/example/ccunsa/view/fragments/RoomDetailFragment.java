@@ -56,3 +56,4 @@ public class RoomDetailFragment extends Fragment {
         return root;
     }
 }
+
