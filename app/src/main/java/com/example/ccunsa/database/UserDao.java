@@ -1,3 +1,4 @@
+////////////////
 package com.example.ccunsa.database;
 
 import androidx.room.Dao;
@@ -8,8 +9,9 @@ import com.example.ccunsa.model.User;
 @Dao
 public interface UserDao {
     @Insert
-    void insert(User user);
-
+    void registerUser(User user);
     @Query("SELECT * FROM user WHERE username = :username AND password = :password LIMIT 1")
-    User authenticate(String username, String password);
+    User cancelar(String username, String password);
+
+
 }

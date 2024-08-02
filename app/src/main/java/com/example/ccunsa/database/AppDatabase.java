@@ -16,20 +16,30 @@ import com.example.ccunsa.model.User;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Pintura.class, User.class}, version = 1, exportSchema = false)
+@Database(entities = {Pintura.class, User.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
+
     public abstract PinturaDao pinturaDao();
     public abstract UserDao userDao();
+    //
+    private static final String dbName= "user";
     private static volatile AppDatabase INSTANCE;
+
+
     private static final int NUMBER_OF_THREADS = 4;
     public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    public static AppDatabase getDatabase(final Context context) {
+    //si
+    public static synchronized AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
+
             synchronized (AppDatabase.class) {
+                //si
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     AppDatabase.class, "app_database")
+
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }
@@ -72,7 +82,7 @@ public abstract class AppDatabase extends RoomDatabase {
             );
 
 
-            udao.insert(new User("user1", "password1"));
+
         });
     }
 
@@ -81,6 +91,7 @@ public abstract class AppDatabase extends RoomDatabase {
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
             databaseWriteExecutor.execute(() -> {
+                ///////
                 PinturaDao dao = INSTANCE.pinturaDao();
                 dao.deleteAll();
 
@@ -97,11 +108,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 dao.insert(pintura2);
                 dao.insert(pintura3);
 
-                // Añadir usuarios de ejemplo
 
-                UserDao userDao = INSTANCE.userDao();
-                userDao.insert(new User("user1", "password1"));
-                userDao.insert(new User("user2", "password2"));
             });
         }
     };

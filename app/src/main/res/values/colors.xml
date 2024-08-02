@@ -5,5 +5,8 @@
 
     <color name="guinda">#84030c</color>
     <color name="mostaza">#cfa967</color>
+    <color name="colorPrimary">#84030c</color>
+    <color name="colorPrimaryDark">#FF000000</color>
+    <color name="colorAccent">#ffffff</color>
 
 </resources>

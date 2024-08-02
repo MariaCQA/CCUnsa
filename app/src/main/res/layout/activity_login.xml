@@ -8,90 +8,76 @@
     tools:context=".view.LoginActivity">
 
     <EditText
-        android:id="@+id/edtNombre"
+        android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:ems="10"
         android:hint="Nombre"
         android:inputType="text"
-        android:text="admin"
-        app:layout_constraintBottom_toTopOf="@+id/edtContraseniaa"
+        android:text="usuario"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.959" />
+        app:layout_constraintVertical_bias="0.409" />
 
     <EditText
-        android:id="@+id/edtContraseniaa"
+
+        android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
         android:ems="10"
         android:hint="Contrasenia "
-        android:inputType="text"
-        android:text="admin"
-        app:layout_constraintBottom_toTopOf="@+id/btnAddAccount"
+        android:inputType="textPassword"
+        android:text="contraseña"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
         android:backgroundTint="#6C0909"
         android:text="Iniciar Sesion"
         android:textColorLink="#56051A"
-        app:layout_constraintBottom_toTopOf="@+id/btnAddAccount"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.045"
-        app:layout_constraintStart_toStartOf="@+id/edtContraseniaa"
-        app:layout_constraintTop_toBottomOf="@+id/edtContraseniaa"
-        app:layout_constraintVertical_bias="0.111" />
 
-    <Button
-        android:id="@+id/btnAddAccount"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:backgroundTint="#A1A0A0"
-        android:text="Crear Cuenta"
-        android:textColorLink="#56051A"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/password"
+        app:layout_constraintVertical_bias="0.155" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="108dp"
         android:layout_height="107dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.867"
+        app:layout_constraintVertical_bias="0.213"
         app:srcCompat="@drawable/ini" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
         android:text="CCUNSA"
         android:textColor="#56051A"
         android:textColorLink="#56051A"
         android:textSize="60sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.024" />
 
     <TextView
         android:id="@+id/textView2"
@@ -124,11 +110,10 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
 
-        android:layout_marginBottom="36dp"
         android:gravity="center"
         android:text="Iniciar Sesion en su Cuenta"
-        app:layout_constraintBottom_toTopOf="@+id/edtNombre"
+        app:layout_constraintBottom_toTopOf="@+id/username"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
