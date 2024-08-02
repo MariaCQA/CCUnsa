@@ -61,15 +61,11 @@ public class RegisterActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "¡Usuario Registrado!", Toast.LENGTH_SHORT).show();
                                 }
                             });
-
-
                         }
                     }).start();
-
                 }else{
                     Toast.makeText(getApplicationContext(), "Fill all fields", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
         login.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +74,6 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
             }
         });
-
     }
 
     private Boolean validateInput(User user){

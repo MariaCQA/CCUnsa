@@ -25,11 +25,9 @@ public abstract class AppDatabase extends RoomDatabase {
     private static final String dbName= "user";
     private static volatile AppDatabase INSTANCE;
 
-
     private static final int NUMBER_OF_THREADS = 4;
     public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
-
-    //si
+    //
     public static synchronized AppDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
 
@@ -38,7 +36,6 @@ public abstract class AppDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     AppDatabase.class, "app_database")
-
                             .fallbackToDestructiveMigration()
                             .build();
                 }
