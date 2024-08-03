@@ -1,0 +1,9 @@
+Buenos dias
+El aplicativo se ejecutó en dos celulares distintos y se ejecuta con normalidad.
+Se esta trabajando con la ultima version de Android que es el Koala, quizá este
+mandando errores en el build al momento de la contruccion por el sdk, es por eso
+que debe tener la ultima verdion del android.
+Una vez ejecutado, el aplicativo esta configurado para hacer un registro obligatorio, 
+una vez llenado sus datos presione Registrar, debera salir Registro Exitoso!. 
+Luego debe presionar login y se abrira otro formulario, en el debe escribir el usuario
+y passsword que acaba de Registrar.
